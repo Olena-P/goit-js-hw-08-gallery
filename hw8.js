@@ -22,7 +22,8 @@ const refs = {
     modal: document.querySelector(".lightbox__content"),
     lightbox: document.querySelector(".lightbox"),
     button: document.querySelector('[data-action="close-lightbox"]'),
-    lightbox__image: document.querySelector(".lightbox__image")
+    lightbox__image: document.querySelector(".lightbox__image"),
+    lightbox__overlay: document.querySelector(".lightbox__overlay"),
 };
   
 //перебрать и присоединить
@@ -35,8 +36,9 @@ refs.gallery.insertAdjacentHTML('afterbegin', imagesTemplateStrings);
 
 //добавление элементов галереи
 refs.gallery.addEventListener('click', onOpenModal);
-refs.modal.addEventListener('click', closeLightbox);
+refs.modal.addEventListener('click', closeModalClick); 
 refs.button.addEventListener('click', onCloseModal);
+lightbox__overlay
 
 // - Реализация делегирования на галерее `ul.js-gallery` 
 // и получение`url` большого изображения.
@@ -91,7 +93,13 @@ function onCloseModal(e) {
 // по работе с событиями.
 
 // - Закрытие модального окна по клику на `div.lightbox__overlay`.
-//const isLightboxOverlayEl = e.target === refs.lightboxOverlay;
+
+function closeModalClick (e) {
+    if (e.target === refs.lightboxOverlay) {
+        onCloseModal()
+    }
+}
+
 
 // - Закрытие модального окна по нажатию клавиши `ESC`.
 function onCloseModalEsc(e) {
@@ -106,46 +114,4 @@ function onCloseModalEsc(e) {
 
 
 // Управление кнопками //
-
-document.addEventListener('keydown', eve => {
-  const divCloseModal = document.querySelector('.lightbox__image');
-
-  // Кнопка Esc //
-  if (eve.code === 'Escape') {
-    isOpen()
-  }
-  if (divEl.className.includes('is-open')) {
-    const mapDefEl = defaultEl.map(value => value.original);
-    const indElNum = Number(mapDefEl.indexOf(divCloseModal.src));
-
-    // Кнопка влево, вверх //
-    const mapDelLight = Number(mapDefEl.length) - 1;
-    if (eve.code === 'ArrowLeft' || eve.code === 'ArrowUp') {
-      if (eve.target.className === imgEl.className) {
-        return;
-      }
-      
-      const indLeftEl = indElNum - 1;
-      divCloseModal.src = mapDefEl[indLeftEl];
-      if (indElNum === 0) {
-        divCloseModal.src = mapDefEl[mapDelLight];
-      }
-    }
-    // Кнопка вправо, вниз //
-    if (
-      eve.code === 'ArrowRight' ||
-      eve.code === 'ArrowDown' ||
-      eve.code === 'Space'
-    ) {
-      if (eve.target.className === imgEl.className) {
-        return;
-      }
-      const indEl = indElNum + 1;
-      divCloseModal.src = mapDefEl[indEl];
-      if (indEl === mapDefEl.length) {
-        divCloseModal.src = mapDefEl[0];
-      }
-    }
-  }
-});
 
